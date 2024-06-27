@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "headscale-api-client"
+version = "0.1.0"
+description = "Headscale API module"
+authors = ["Andrea Mistrali <andrea@mistrali.pw>"]
+license = "BSD"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.3"
+pydantic = "^2.7.4"
+pydantic-settings = "^2.3.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
