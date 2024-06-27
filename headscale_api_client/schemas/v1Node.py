@@ -13,7 +13,7 @@ class v1Node(BaseModel):
 
     """
 
-    id: Optional[str] = Field(alias="id", default=None)
+    id: Optional[int] = Field(alias="id", default=None)
     machineKey: Optional[str] = Field(alias="machineKey", default=None)
     nodeKey: Optional[str] = Field(alias="nodeKey", default=None)
     discoKey: Optional[str] = Field(alias="discoKey", default=None)

@@ -1,4 +1,4 @@
-from typing import *
+from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
@@ -11,4 +11,5 @@ class v1GetRoutesResponse(BaseModel):
 
     """
 
-    routes: Optional[List[Optional[v1Route]]] = Field(alias="routes", default=None)
+    routes: Optional[List[Optional[v1Route]]] = Field(
+        alias="routes", default=None)
