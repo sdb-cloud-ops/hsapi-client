@@ -1,27 +1,27 @@
+from typing import Optional, List
+from pydantic import BaseModel, Field
 from .model import HSAPICall
-from headscale_api_client.schemas import (v1GetRoutesResponse,
-                                          v1DeleteRouteResponse,
-                                          v1EnableRouteResponse,
-                                          v1DisableRouteResponse,
-                                          )
+from .schemas import v1Route
+
+
+class v1ListRoutesResponse(BaseModel):
+    routes: Optional[List[Optional[v1Route]]] = Field(
+        alias="routes", default=None)
 
 
 class Route(HSAPICall):
 
     objectPath = "routes"
 
-    def list(self) -> v1GetRoutesResponse:
+    def list(self) -> v1ListRoutesResponse:
         response = self.call('get')
-        return v1GetRoutesResponse(**response.json())
+        return v1ListRoutesResponse(**response.json())
 
-    def delete(self, routeId: str) -> v1DeleteRouteResponse:
-        response = self.call('delete', call_path=routeId)
-        return v1DeleteRouteResponse(**response.json())
+    def delete(self, routeId: str) -> None:
+        self.call('delete', call_path=routeId)
 
-    def enable(self, routeId: str) -> v1EnableRouteResponse:
-        response = self.call('post', f'{routeId}/enable')
-        return v1EnableRouteResponse(**response.json())
+    def enable(self, routeId: str) -> None:
+        self.call('post', f'{routeId}/enable')
 
-    def disable(self, routeId: str) -> v1DisableRouteResponse:
-        response = self.call('post', f'{routeId}/disable')
-        return v1DisableRouteResponse(**response.json())
+    def disable(self, routeId: str) -> None:
+        self.call('post', f'{routeId}/disable')

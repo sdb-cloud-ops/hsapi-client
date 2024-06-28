@@ -1,26 +1,42 @@
+from pydantic import BaseModel, Field
+from typing import Optional, List
+from datetime import datetime
+
 from .model import HSAPICall
-from headscale_api_client.schemas import (v1CreateApiKeyRequest,
-                                          v1ListApiKeysResponse,
-                                          v1CreateApiKeyResponse,
-                                          v1ExpireApiKeyRequest,
-                                          v1ExpireApiKeyResponse,
-                                          v1DeleteApiKeyResponse)
+from .schemas import v1ApiKey
+
+
+class v1CreateApiKeyRequest(BaseModel):
+    expiration: str = Field(alias="expiration", default=None)
+
+
+class v1ExpireApiKeyRequest(BaseModel):
+    prefix: str = Field(alias="prefix", default=None)
+
+
+class v1ListApiKeysResponse(BaseModel):
+    apiKeys: Optional[List[Optional[v1ApiKey]]] = Field(
+        alias="apiKeys", default=None)
+
+
+class v1CreateApiKeyResponse(BaseModel):
+    apiKey: str = Field(alias="apiKey", default=None)
 
 
 class APIKey(HSAPICall):
 
+    objectPath = "apikey"
+
     def list(self) -> v1ListApiKeysResponse:
-        response = self.call('get', 'apikey')
+        response = self.call('get')
         return v1ListApiKeysResponse(**response.json())
 
     def create(self, data: v1CreateApiKeyRequest) -> v1CreateApiKeyResponse:
-        response = self.call('post', 'apikey', data)
+        response = self.call('post', data=data)
         return v1CreateApiKeyResponse(**response.json())
 
-    def expire(self, data: v1ExpireApiKeyRequest) -> v1ExpireApiKeyResponse:
-        response = self.call('post', 'apikey/expire', data)
-        return v1ExpireApiKeyResponse(**response.json())
+    def expire(self, data: v1ExpireApiKeyRequest) -> None:
+        self.call('post', call_path='expire', data=data)
 
-    def delete(self, prefix: str) -> v1DeleteApiKeyResponse:
-        response = self.call('delete', f'apikey/{prefix}')
-        return v1DeleteApiKeyResponse(**response.json())
+    def delete(self, prefix: str) -> None:
+        self.call('delete', call_path=prefix)
