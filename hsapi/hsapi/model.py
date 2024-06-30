@@ -28,11 +28,8 @@ class HSAPICall:
 
     objectPath: str = ""
 
-    def __init__(self, api_settings_override: Optional[APISettings] = None) -> None:
-        if api_settings_override:
-            self.api_settings = api_settings_override
-        else:
-            self.api_settings = APISettings()
+    def __init__(self, settings: Optional[APISettings] = None) -> None:
+        self.api_settings = settings if settings else APISettings()
         self.base_path = f"{
             self.api_settings.server}{self.api_settings.api_path}/{self.objectPath}"
 
@@ -61,7 +58,7 @@ class HSAPICall:
             json=json_
         )
         if response.status_code != 200:
-            raise HTTPException(response.status_code, f" failed with status code: {
+            raise HTTPException(response.status_code, f" failed. Error: {
                                 response.text}")
 
         return response

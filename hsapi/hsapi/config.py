@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Union
+from typing import Union
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -8,11 +8,11 @@ class APISettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix='HS_')
     server: str = "http://localhost:8080"
     api_path: str = "/api/v1"
+    api_token: Union[str, None] = None
     ssl_verify: Union[bool, str] = True
-    api_token: Union[None, str] = None
 
     def refresh_api_token(self):
-        self.api_token = os.environ.get('HS_API_TOKEN')
+        self.api_token = os.environ.get('HS_API_TOKEN', 'default')
 
 
 class HTTPException(Exception):
