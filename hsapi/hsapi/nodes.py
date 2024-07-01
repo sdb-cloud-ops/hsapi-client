@@ -45,9 +45,25 @@ class Node(HSAPICall):
         response = self.call('get')
         return v1ListNodesResponse(**response.json())
 
-    def get(self, nodeId: str) -> v1NodeResponse:
-        response = self.call('get', call_path=nodeId)
-        return v1NodeResponse(**response.json())
+    def get(self, nodeId: str) -> v1Node:
+        # There is a bug in headscale API
+        # retrieving a specific node does not return the tags
+        # so we get the full list of nodes and extract the node with the
+        # ID we want
+        # response = self.call('get', call_path=nodeId)
+        nodelist = self.list()
+        node = [n for n in nodelist.nodes if n.id == nodeId]
+        if node:
+            return node[0]  # type: ignore
+        else:
+            return v1Node()
+
+    def byUser(self, username: str) -> v1ListNodesResponse:
+        nodelist = self.list()
+
+        byUser = [n for n in nodelist.nodes if n.user.name == username]
+
+        return v1ListNodesResponse(nodes=byUser)
 
     def delete(self, nodeId: str) -> None:
         self.call('delete', call_path=nodeId)
