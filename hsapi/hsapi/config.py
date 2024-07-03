@@ -5,14 +5,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class APISettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix='HS_')
+    model_config = SettingsConfigDict(env_prefix='HSAPI_')
     server: str = "http://localhost:8080"
     api_path: str = "/api/v1"
     api_token: Union[str, None] = None
     ssl_verify: Union[bool, str] = True
 
     def refresh_api_token(self):
-        self.api_token = os.environ.get('HS_API_TOKEN', 'default')
+        self.api_token = os.environ.get('HSAPI_API_TOKEN', 'default')
 
 
 class HTTPException(Exception):
