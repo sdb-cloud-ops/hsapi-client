@@ -16,7 +16,7 @@ class v1PreAuthKeyResponse(BaseModel):
 
 class v1ExpirePreAuthKeyRequest(BaseModel):
     user: str = Field(alias="user", default=None)
-    key: int = Field(alias="key", default=None)
+    key: str = Field(alias="key", default=None)
 
 
 class v1CreatePreAuthKeyRequest(BaseModel):

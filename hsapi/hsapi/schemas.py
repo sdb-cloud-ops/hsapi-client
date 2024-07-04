@@ -45,7 +45,10 @@ class v1PreAuthKey(BaseModel):
     def expired(self) -> bool:
         tzinfo = timezone(timedelta(hours=0))  # UTC
         now = datetime.now(tzinfo)
-        return self.expiration < now  # type: ignore
+        exptime = self.expiration < now
+        expused = not self.reusable and self.used
+        expephemereal = self.ephemeral and self.used
+        return exptime or expused or expephemereal
 
 
 class v1User(BaseModel):
