@@ -20,8 +20,8 @@ class Route(HSAPICall):
     def delete(self, routeId: str) -> None:
         self.call('delete', call_path=routeId)
 
-    def enable(self, routeId: str) -> None:
+    def enable(self, routeId: int) -> None:
         self.call('post', f'{routeId}/enable')
 
-    def disable(self, routeId: str) -> None:
+    def disable(self, routeId: int) -> None:
         self.call('post', f'{routeId}/disable')
