@@ -86,6 +86,20 @@ class v1Node(BaseModel):
     givenName: str = Field(alias="givenName", default=None)
     online: bool = Field(alias="online", default=None)
 
+    @computed_field
+    @property
+    def expired(self) -> bool:
+        tzinfo = timezone(timedelta(hours=0))  # UTC
+        now = datetime.now(tzinfo)
+        return self.expiry.year != 1 and self.expiry < now
+
+    @computed_field
+    @property
+    def expireDate(self) -> Optional[int | datetime]:
+        if self.expiry.year == 1:
+            return 0
+        return self.expiry
+
 
 class v1Route(BaseModel):
     """
