@@ -33,7 +33,7 @@ class HSAPICall:
         self.base_path = f"{
             self.api_settings.server}{self.api_settings.api_path}/{self.objectPath}"
 
-    def call(self, method, call_path: str = "", data=None, query: dict = {}):
+    def call(self, method, call_path: Union[str, int] = "", data=None, query: dict = {}):
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",

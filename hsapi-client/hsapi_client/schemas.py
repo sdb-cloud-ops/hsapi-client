@@ -25,7 +25,7 @@ class v1ApiKey(BaseModel):
     def expired(self) -> bool:
         tzinfo = timezone(timedelta(hours=0))  # UTC
         now = datetime.now(tzinfo)
-        return self.expiration < now  # type: ignore
+        return self.expiration < now
 
 
 class v1PreAuthKey(BaseModel):
