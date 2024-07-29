@@ -17,6 +17,13 @@ class Route(HSAPICall):
         response = self.call('get')
         return v1ListRoutesResponse(**response.json())
 
+    def get(self, routeId: int) -> Optional[v1Route | None]:
+        routes = self.list()
+        route = [r for r in routes.routes if r.id == routeId]
+        if route:
+            return route[0]
+        return None
+
     def delete(self, routeId: str) -> None:
         self.call('delete', call_path=routeId)
 
@@ -25,3 +32,10 @@ class Route(HSAPICall):
 
     def disable(self, routeId: int) -> None:
         self.call('post', f'{routeId}/disable')
+
+    def toggle(self, routeId: int) -> None:
+        route = self.get(routeId)
+        if route and route.enabled:
+            self.disable(routeId)
+        else:
+            self.enable(routeId)
