@@ -60,7 +60,7 @@ class Node(HSAPICall):
         # retrieving a specific node does not return the tags
         # This does a real get
         node = self.call('get', call_path=nodeId)
-        return v1Node(**node.json())
+        return v1Node(**node.json()['node'])
 
     def byUser(self, username: str) -> v1ListNodesResponse:
         nodelist = self.list()
