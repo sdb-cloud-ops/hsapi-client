@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hsapi-client"
-version = "0.9.6"
+version = "0.9.7"
 description = "Headscale API client"
 authors = ["Andrea Mistrali <andrea@mistrali.pw>"]
 license = "BSD"

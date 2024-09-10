@@ -92,7 +92,8 @@ class Node(HSAPICall):
         return v1NodeResponse(**response.json())
 
     # Broken on server
-    def backfillips(self, confirmed: bool = True) -> v1BackfillNodeIPsResponse:
+    def backfillips(self) -> v1BackfillNodeIPsResponse:
         response = self.call(
-            'post', f'/backfillips?confirmed={confirmed}')
+            'post', f'backfillips',
+            query=dict(confirmed=True))
         return v1BackfillNodeIPsResponse(**response.json())
